@@ -6,9 +6,9 @@ from utils import *
 class Parameter(Tensor):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+
     def zero_grad(self):
-        self.grad = 0
+        self.grad=0
 
 class Module:
     def __init__(self):
@@ -25,11 +25,6 @@ class Module:
 
         return self._parameters
 
-    def zero_grad(self):
-        P = self.parameters()
-        for p in P:
-            p.zero_grad()
-
     def __call__(self, input):
         return self.forward(input)
 
@@ -39,7 +34,6 @@ class _Neuron(Module):
         self.dim_in = dim_in
         self.weights = [Parameter(value = uniform(-(dim_in**-0.5), dim_in**-0.5)) for _ in range(dim_in)]
         self.bias = Parameter(value = uniform(-(dim_in**-0.5), dim_in**-0.5)) if bias else 0
-        print(type(self.weights))
         self.activation_fn = activation_fn
     
     def forward(self, input):

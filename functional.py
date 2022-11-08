@@ -11,7 +11,7 @@ def relu(input):
 
 
 def tanh(input):
-    ret = Tensor(value=(((exp(input) - exp(-input))/(exp(input) + exp(-input))).value), op='tanh', parents=tuple([input]))
+    ret = Tensor(value=((e**input.value - e**(-input))/(e**(input) + e**(-input))), op='tanh', parents=tuple([input]))
     def _calc_grad():
         input.grad += ret.grad*(1-ret.value**2)
     ret._calc_grad = _calc_grad

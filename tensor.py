@@ -72,7 +72,7 @@ class Tensor:
         other = other if isinstance(other, Tensor) else Tensor(value=other, label=str(other))
         ret = Tensor(value=self.value**other.value, parents=(self, other), label = '(' + self.label + " ** " + other.label + ')', op='pov')
         def _calc_grad():
-            self.grad += ret.grad*other.value*(ret.value/self.value)
+            self.grad += ret.grad*other.value*(self.value**(other.value-1))
             # other.grad += ret.grad*log(self.value)*ret.value
             # print(f'New grad for {self.label}: {self.grad}\nNew grad for {other.label}: {other.grad}\n\n')
 
@@ -84,7 +84,7 @@ class Tensor:
         ret = Tensor(value=other.value**self.value, parents=(self, other), label = '(' + other.label + " ** " + self.label + ')', op='rpov')
         def _calc_grad():
             # self.grad += ret.grad*log(other.value)*ret.value
-            other.grad += ret.grad*self.value*(ret.value/other.value)
+            other.grad += ret.grad*self.value*(other.value**(self.value-1))
             # print(f'New grad for {self.label}: {self.grad}\nNew grad for {other.label}: {other.grad}\n\n')
             
         ret._calc_grad = _calc_grad
